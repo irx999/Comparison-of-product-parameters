@@ -95,9 +95,16 @@ def product_parameters_comparison(df: pd.DataFrame):
                         <img src="https://irx999.fun/file/test_Image.png" style="max-width:{set_image_width}%;">
                     </a>
                     """, unsafe_allow_html=True)
+            column_config_setting = {
+                "Image": st.column_config.ImageColumn(
+                    "图片",
+                    width="medium",
+                )
+            }
 
-            st.dataframe(display_data.drop(columns=["技嘉规格型号copy","Image","官网"]).T,
-                         use_container_width=True
-                         )
+            st.dataframe(display_data.drop(columns= ["技嘉规格型号copy"],),
+                        use_container_width= True,
+
+                        column_config= column_config_setting )
         else:
             st.title("请选择要对比的显卡型号")
