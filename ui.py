@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 
-def product_parameters_comparison(df):
+def product_parameters_comparison(df:pd.DataFrame):
     # 页面标题
     st.title('显卡参数对比工具')
 
@@ -18,6 +18,8 @@ def product_parameters_comparison(df):
                 df = df[df["是否在售"] == "在售"]
             elif  是否在售  == "已停售":
                 df = df[df["是否在售"] == "not_sale"]
+            else:
+                df = df.copy()
         with  col1:
             gpu_column = st.selectbox("选择显卡型号所在的列", ["简称","技嘉官网名称","技嘉规格型号"], index=0)
         with  col2:
@@ -62,10 +64,42 @@ def product_parameters_comparison(df):
 
         # 构建展示数据的 DataFrame，行是显卡型号，列是选中的参数
         if selected_params:
-            display_data = df[[gpu_column] + selected_params].set_index(gpu_column)
+            display_data = df[[gpu_column] + selected_params+["技嘉规格型号copy"]].set_index(gpu_column)
         else:
+            df["技嘉规格型号copy"] = df["技嘉规格型号"]
             display_data = df.set_index(gpu_column)
 
         # 展示最终的对比表格
-        st.write("参数对比表：")
-        st.dataframe(display_data.T,use_container_width= (len(selected_gpus) > 3))
+        if selected_gpus:
+            cols = st.columns(len(selected_gpus)+1)  # N个列
+            cols = st.columns([0.5]+ [1]*len(selected_gpus))  # N个列
+            with cols[0]:
+                st.write("显卡图片：")
+            for index, row in display_data.iterrows():
+                with cols[selected_gpus.index(index)+1]:
+                    #st.write(f"{index}：")
+
+                    set_image_width = 100 if len(selected_gpus) > 3 else 50
+                    st.markdown(f"""
+                    <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
+                        <img src="https://irx999.fun/file/test_Image.png" style="max-width:{set_image_width}%;">
+                    </a>
+                    """, unsafe_allow_html=True)
+                    # <img src="{row['Image']}" style="max-width:100%;">
+
+            st.dataframe(display_data.T,
+                        #use_container_width= (len(selected_gpus) > 3)
+                        use_container_width= True
+                        )
+        else:
+            st.title("请选择要对比的显卡型号",)
+        
+        
+        
+        #test
+
+
+        
+
+
+        #test2
