@@ -1,9 +1,8 @@
 '''这里是写UI页面相关'''
 import streamlit as st
 import pandas as pd
-from pathlib import Path
 
-from load_data import GPU_DATA, get_image_base64
+from load_data import GPU_DATA
 
 def main_ui():
     """主页面"""
@@ -101,18 +100,34 @@ def product_parameters_comparison(df: pd.DataFrame):
 
             st.title("竖向表格  参数对比")
             
-            cols = st.columns([1.2 if len(selected_gpus)>6 else 0.8 if len(selected_gpus)>1 else 0.5] + [1] * len(selected_gpus))
+            cols = st.columns([1.1 if len(selected_gpus)>=10 else 1 if len(selected_gpus)>6 else 0.6 if len(selected_gpus)>=3 else 0.5 if len(selected_gpus)>1 else 0.4]  + [1] * len(selected_gpus))
             with cols[0]:
                 st.write("显卡图片：")
             for index, row in display_data.iterrows():
                 with cols[selected_gpus.index(index) + 1]:
-                    set_image_width = 100 if len(selected_gpus) > 3 else 50
-                    image_base64 = get_image_base64("test_Image.png")
+                    set_image_width = 80 if len(selected_gpus) > 3 else 50
+                    # st.markdown(f"""
+                    # <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
+                    #     <img src="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" style="max-width:{set_image_width}%;">
+                    # </a>
+                    # """, unsafe_allow_html=True)
+                    #st.button(row["技嘉规格型号copy"],on_click=lambda: get_image_base64(row["技嘉规格型号copy"],row["Image"],set_image_width))
                     st.markdown(f"""
-                    <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
-                        <img src="https://irx999.fun/file/test_Image.png" style="max-width:{set_image_width}%;">
+                    
+                    <div style="text-align: center;">
+                    <a href="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" target="_blank">
+                    <img src="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" style="max-width:{set_image_width}%;">
                     </a>
+                    </div>
+                    <div style="text-align: center; margin-top: 1px; border:  None; padding: 0px;">
+                    <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
+                    <button style="border: none;">{row["技嘉规格型号copy"]}特色重点</button>
+                    </a>
+
                     """, unsafe_allow_html=True)
+
+            #st.title("")
+
             column_config_setting = {k: st.column_config.Column(k, width="small") for k in selected_gpus}
             display_data = display_data.drop(columns= ["技嘉规格型号copy","Image"])
             st.dataframe(display_data.T,
