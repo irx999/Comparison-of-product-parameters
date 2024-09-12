@@ -9,7 +9,7 @@ def main_ui():
     params = st.query_params
     current_page  = params.get("page", "欢迎页")
 
-    print(current_page,"当前页面")
+    #print(current_page,"当前页面")
 
     def navigate_to(page):
         params["page"] = page
@@ -17,20 +17,30 @@ def main_ui():
 
     st.sidebar.button(">> 1. 欢迎页",
                        on_click=navigate_to, args=("欢迎页",))
-    st.sidebar.button(">> 2. 显卡参数对比工具",
-                       on_click=navigate_to, args=("显卡参数对比工具",))
     st.sidebar.button(">> 3. CPU参数对比工具- 待开发",
                        on_click=navigate_to, args=("CPU参数对比工具",))
+    st.sidebar.button(">> 3. 主板参数对比工具- 待开发",
+                       on_click=navigate_to, args=("主板参数对比工具",))
+    st.sidebar.button(">> 2. 显卡参数对比工具",
+                       on_click=navigate_to, args=("显卡参数对比工具",))
+    
 
 
     # 根据当前页面显示内容
     if current_page == "欢迎页":
         welcome_page()
+    
+    elif current_page== "CPU参数对比工具":
+        st.markdown("<h1 style='text-align: center;'>CPU参数对比工具- 待开发</h1>", unsafe_allow_html=True)
+    
+    elif current_page== "主板参数对比工具":
+
+        st.markdown("<h1 style='text-align: center;'>主板参数对比工具- 待开发</h1>", unsafe_allow_html=True)
+        # 这里可以添加CPU参数对比工具的代码
+    
     elif current_page== "显卡参数对比工具":
         product_parameters_comparison(GPU_DATA)
-    elif current_page== "CPU参数对比工具":
-        st.title("CPU参数对比工具")
-        # 这里可以添加CPU参数对比工具的代码
+    
 
 
 def welcome_page():
@@ -105,7 +115,7 @@ def product_parameters_comparison(df: pd.DataFrame):
                 st.write("显卡图片：")
             for index, row in display_data.iterrows():
                 with cols[selected_gpus.index(index) + 1]:
-                    set_image_width = 80 if len(selected_gpus) > 3 else 50
+                    set_image_width = 100 if len(selected_gpus) > 3 else 40
                     # st.markdown(f"""
                     # <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
                     #     <img src="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" style="max-width:{set_image_width}%;">
@@ -113,7 +123,6 @@ def product_parameters_comparison(df: pd.DataFrame):
                     # """, unsafe_allow_html=True)
                     #st.button(row["技嘉规格型号copy"],on_click=lambda: get_image_base64(row["技嘉规格型号copy"],row["Image"],set_image_width))
                     st.markdown(f"""
-                    
                     <div style="text-align: center;">
                     <a href="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" target="_blank">
                     <img src="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" style="max-width:{set_image_width}%;">
@@ -123,7 +132,6 @@ def product_parameters_comparison(df: pd.DataFrame):
                     <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
                     <button style="border: none;">{row["技嘉规格型号copy"]}特色重点</button>
                     </a>
-
                     """, unsafe_allow_html=True)
 
             #st.title("")
@@ -148,4 +156,4 @@ def product_parameters_comparison(df: pd.DataFrame):
 
 
         else:
-            st.title("请选择要对比的显卡型号")
+            st.markdown("<h1 style='text-align: center;'> -- 请选择的对比的显卡型号 --</h1>", unsafe_allow_html=True)

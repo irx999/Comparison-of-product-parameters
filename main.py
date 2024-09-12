@@ -5,7 +5,6 @@ from ui import main_ui
 
 # 设置页面配置
 
-print("启动成功！")
 
-
-main_ui()
+if __name__ == '__main__':
+    main_ui()
