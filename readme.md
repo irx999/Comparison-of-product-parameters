@@ -16,8 +16,8 @@
 ```yaml
 version: '3'
 services:
-  ProductInfoHub :
-    container_name: ProductInfoHub
+  productchnfohub :
+    container_name: productchnfohub
     build: .
     ports:
     - "8501:8501"
