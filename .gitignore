@@ -1,5 +1,7 @@
 dist/
 build/
-/__pycache__/
-test.py
+*/__pycache__/*
+
 .vscode/
+*.pyc
+test.py

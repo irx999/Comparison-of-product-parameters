@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 
-from load_data import GPU_DATA
+from modules.load_data import GPU_DATA
 
 def main_ui():
     """主页面"""
@@ -23,24 +23,24 @@ def main_ui():
                        on_click=navigate_to, args=("主板参数对比工具",))
     st.sidebar.button(">> 2. 显卡参数对比工具",
                        on_click=navigate_to, args=("显卡参数对比工具",))
-    
+
 
 
     # 根据当前页面显示内容
     if current_page == "欢迎页":
         welcome_page()
-    
+
     elif current_page== "CPU参数对比工具":
         st.markdown("<h1 style='text-align: center;'>CPU参数对比工具- 待开发</h1>", unsafe_allow_html=True)
-    
+
     elif current_page== "主板参数对比工具":
 
         st.markdown("<h1 style='text-align: center;'>主板参数对比工具- 待开发</h1>", unsafe_allow_html=True)
         # 这里可以添加CPU参数对比工具的代码
-    
+
     elif current_page== "显卡参数对比工具":
         product_parameters_comparison(GPU_DATA)
-    
+
 
 
 def welcome_page():
@@ -101,7 +101,8 @@ def product_parameters_comparison(df: pd.DataFrame):
         # 构建展示数据的 DataFrame，行是显卡型号，列是选中的参数
         df["技嘉规格型号copy"] = df["技嘉规格型号"]
         if selected_params:
-            display_data = df[[gpu_column] + selected_params + ["技嘉规格型号copy"]+["Image"]].set_index(gpu_column)
+            display_data = df[[gpu_column] + selected_params \
+                            + ["技嘉规格型号copy"]+["Image"]].set_index(gpu_column)
         else:
             display_data = df.set_index(gpu_column)
 
@@ -110,18 +111,16 @@ def product_parameters_comparison(df: pd.DataFrame):
 
             st.title("竖向表格  参数对比")
             
-            cols = st.columns([1.1 if len(selected_gpus)>=10 else 1 if len(selected_gpus)>6 else 0.6 if len(selected_gpus)>=3 else 0.5 if len(selected_gpus)>1 else 0.4]  + [1] * len(selected_gpus))
+            cols = st.columns([ 1.1 if len(selected_gpus)>= 10 else \
+                                1.0 if len(selected_gpus)>= 6 else \
+                                0.6 if len(selected_gpus)>= 3 else \
+                                0.5 if len(selected_gpus)> 1 else 0.4]  \
+                                + [1] * len(selected_gpus))
             with cols[0]:
                 st.write("显卡图片：")
             for index, row in display_data.iterrows():
                 with cols[selected_gpus.index(index) + 1]:
                     set_image_width = 100 if len(selected_gpus) > 3 else 40
-                    # st.markdown(f"""
-                    # <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
-                    #     <img src="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" style="max-width:{set_image_width}%;">
-                    # </a>
-                    # """, unsafe_allow_html=True)
-                    #st.button(row["技嘉规格型号copy"],on_click=lambda: get_image_base64(row["技嘉规格型号copy"],row["Image"],set_image_width))
                     st.markdown(f"""
                     <div style="text-align: center;">
                     <a href="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" target="_blank">
