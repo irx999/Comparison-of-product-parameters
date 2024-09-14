@@ -123,8 +123,8 @@ def product_parameters_comparison(df: pd.DataFrame):
                     set_image_width = 100 if len(selected_gpus) > 3 else 40
                     st.markdown(f"""
                     <div style="text-align: center;">
-                    <a href="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" target="_blank">
-                    <img src="http://192.168.50.13:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" style="max-width:{set_image_width}%;">
+                    <a href="http://w.irx999.fun:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" target="_blank">
+                    <img src="http://w.irx999.fun:23333/_uploads/显卡图片/{row['技嘉规格型号copy']}/{row['技嘉规格型号copy']}显卡图片.png" style="max-width:{set_image_width}%;">
                     </a>
                     </div>
                     <div style="text-align: center; margin-top: 1px; border:  None; padding: 0px;">

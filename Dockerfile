@@ -1,10 +1,14 @@
-FROM python:3.12-alpine
-WORKDIR /src
+FROM python:3.12-slim
 
-COPY main.py /src
-COPY requirements.txt /src
+WORKDIR /app
+COPY main.py /app
+COPY requirements.txt /app
+
 
 RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
+EXPOSE 8501
 
-CMD ["streamlit","run","main.py"]
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+ENTRYPOINT ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]

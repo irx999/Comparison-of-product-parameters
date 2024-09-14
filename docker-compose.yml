@@ -1,9 +1,9 @@
 version: '3'
 services:
-  test :
-    container_name: test
+  productinfoviewer :
+    container_name: productinfoviewer
     build: .
     ports:
     - "8501:8501"
     volumes:
-    - ./models:/src/models
+    - ./modules:/app/modules
