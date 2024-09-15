@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 
-from modules.load_data import GPU_DATA
+from modules.load_data import GPU_DATA,TEST_DATA
 
 def main_ui():
     """主页面"""
@@ -15,39 +15,56 @@ def main_ui():
         params["page"] = page
         #main_ui()
 
-    st.sidebar.button(">> 1. 欢迎页",
-                       on_click=navigate_to, args=("欢迎页",))
-    st.sidebar.button(">> 3. CPU参数对比工具- 待开发",
-                       on_click=navigate_to, args=("CPU参数对比工具",))
-    st.sidebar.button(">> 3. 主板参数对比工具- 待开发",
-                       on_click=navigate_to, args=("主板参数对比工具",))
-    st.sidebar.button(">> 2. 显卡参数对比工具",
-                       on_click=navigate_to, args=("显卡参数对比工具",))
-
-
+    pagesetting = {">> 1. 欢迎页": "欢迎页",
+                   ">> 2. CPU参数对比工具- 待开发": "CPU参数对比工具",
+                   ">> 3. 主板参数对比工具- 待开发": "主板参数对比工具",
+                   ">> 4. 显卡参数对比工具": "显卡参数对比工具",
+                   #">> 5. 测试页面": "测试页面",
+    }
+    for   page_name, page_id in pagesetting.items():
+        st.sidebar.button(page_name, on_click=navigate_to, args=(page_id,))
 
     # 根据当前页面显示内容
-    if current_page == "欢迎页":
-        welcome_page()
+    match current_page:
+        case "欢迎页":
+            welcome_page()
 
-    elif current_page== "CPU参数对比工具":
-        st.markdown("<h1 style='text-align: center;'>CPU参数对比工具- 待开发</h1>", unsafe_allow_html=True)
+        case "CPU参数对比工具":
+            cpu_product_parameters_comparison()
 
-    elif current_page== "主板参数对比工具":
+        case "主板参数对比工具":
+            mb_product_parameters_comparison()
 
-        st.markdown("<h1 style='text-align: center;'>主板参数对比工具- 待开发</h1>", unsafe_allow_html=True)
-        # 这里可以添加CPU参数对比工具的代码
+        case "显卡参数对比工具":
+            gpu_product_parameters_comparison(GPU_DATA)
 
-    elif current_page== "显卡参数对比工具":
-        product_parameters_comparison(GPU_DATA)
+        case "测试页面":
+            test_page(TEST_DATA)
 
+        case _:  # 其他页面
+            st.markdown("<h1 style='text-align: center;'>-- 页面不存在 --</h1>", unsafe_allow_html=True)
 
-
+def test_page(test_data:pd.DataFrame):
+    """测试页面"""
+    if not test_data.empty:
+        st.title("测试页面")
+        st.dataframe(test_data)
+    else:
+        st.markdown("<h1 style='text-align: center;'>-- 无测试数据 --</h1>", unsafe_allow_html=True)
 def welcome_page():
     """欢迎页"""
     st.markdown("<h1 style='text-align: center;'>欢迎使用参数对比工具</h1>", unsafe_allow_html=True)
 
-def product_parameters_comparison(df: pd.DataFrame):
+def cpu_product_parameters_comparison(df: pd.DataFrame =None):
+    """ CPU参数页面 """
+    st.markdown("<h1 style='text-align: center;'>CPU参数对比工具- 待开发</h1>",
+                         unsafe_allow_html=True)
+def mb_product_parameters_comparison(df: pd.DataFrame =None):
+    """ 主板参数页面 """
+    st.markdown("<h1 style='text-align: center;'>主板参数对比工具- 待开发</h1>",
+                unsafe_allow_html=True)
+
+def gpu_product_parameters_comparison(df: pd.DataFrame =None):
     '''显卡参数页面'''
     # 页面标题
     st.title('显卡参数对比工具')
@@ -110,7 +127,6 @@ def product_parameters_comparison(df: pd.DataFrame):
         if selected_gpus:
 
             st.title("竖向表格  参数对比")
-            
             cols = st.columns([ 1.1 if len(selected_gpus)>= 10 else \
                                 1.0 if len(selected_gpus)>= 6 else \
                                 0.6 if len(selected_gpus)>= 3 else \
@@ -155,4 +171,5 @@ def product_parameters_comparison(df: pd.DataFrame):
 
 
         else:
-            st.markdown("<h1 style='text-align: center;'> -- 请选择的对比的显卡型号 --</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 style='text-align: center;'> -- 请选择的对比的显卡型号 --</h1>",\
+                         unsafe_allow_html=True)
