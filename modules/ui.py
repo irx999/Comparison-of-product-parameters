@@ -48,7 +48,18 @@ def test_page(test_data:pd.DataFrame):
     """测试页面"""
     if not test_data.empty:
         st.title("测试页面")
-        st.dataframe(test_data)
+        match st.selectbox("选择观测维度", ["店铺负责人", "店铺", "业务员"], index=0):
+            case "店铺负责人":
+                test_data["日期"] = pd.to_datetime(test_data["出库日期"]).dt.date
+                test_data = test_data.groupby(["日期","店铺负责人"])\
+                    .agg({'销售额': 'sum',"整机数量":"sum"}).reset_index()
+                st.dataframe(test_data)
+                st.line_chart(test_data,x="日期",y=["整机数量"],color="店铺负责人",use_container_width = True)
+            case _:
+                st.write("123")
+
+
+        
     else:
         st.markdown("<h1 style='text-align: center;'>-- 无测试数据 --</h1>", unsafe_allow_html=True)
 def welcome_page():
@@ -152,8 +163,8 @@ def gpu_product_parameters_comparison(df: pd.DataFrame =None):
             #st.title("")
 
             column_config_setting = {k: st.column_config.Column(k, width="small") for k in selected_gpus}
-            display_data = display_data.drop(columns= ["技嘉规格型号copy","Image"])
-            st.dataframe(display_data.T,
+            
+            st.dataframe(display_data.drop(columns= ["技嘉规格型号copy","Image"]).T,
                         use_container_width= True,
                         column_config=column_config_setting,height=1020)
 
@@ -161,7 +172,7 @@ def gpu_product_parameters_comparison(df: pd.DataFrame =None):
             column_config_setting = {
                 "Image": st.column_config.ImageColumn(
                     "图片",
-                    width="large",
+                    width="small",
                 )
             }
             st.dataframe(display_data,
