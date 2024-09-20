@@ -1,6 +1,7 @@
 '''这里是写UI页面相关'''
 import streamlit as st
 import pandas as pd
+from sympy import N
 
 
 
