@@ -17,10 +17,10 @@ def gpu_product_parameters_comparison(df: pd.DataFrame =None):
         col0, col1, col2 = st.columns(3)
         with col0:
             是否在售 = st.selectbox("是否显示所有显卡型号", ["在售", "已停售", "全部"])
-            if 是否在售 == "在售":
-                df = df[df["是否在售"] == "在售"]
-            elif 是否在售 == "已停售":
-                df = df[df["是否在售"] == "not_sale"]
+        if 是否在售 == "在售":
+            df = df[df["是否在售"] == "在售"]
+        elif 是否在售 == "已停售":
+            df = df[df["是否在售"] == "not_sale"]
         with col1:
             gpu_column = st.selectbox("选择查看的列", ["简称", "技嘉官网名称", "技嘉规格型号"], index=0)
         with col2:

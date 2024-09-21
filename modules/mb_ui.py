@@ -15,17 +15,20 @@ def mb_product_parameters_comparison(df: pd.DataFrame =None):
         col0, col1, col2 = st.columns(3)
 
         with col0:
-            选择阵营  = st.selectbox('选择阵营',["全部","Intel","amd",], index=0)
-            if 选择阵营 == "Intel":
-                df = df[df["阵营"] == "Intel"]
-            elif 选择阵营 == "AMD":
-                df = df[df["阵营"] == "AMD"]
+            选择阵营  = st.selectbox('选择阵营',["全部","Intel","AMD",], index=0)
+        if 选择阵营 == "Intel":
+            df = df[df["阵营"] == "Intel"]
+        elif 选择阵营 == "AMD":
+            df = df[df["阵营"] == "AMD"] 
         with col1:
             选择查看的列 = st.selectbox("选择查看的列", ["简称", "名称", "技嘉规格型号"], index=0)
+        
         with col2:
             筛选框 = st.selectbox("选择筛选项", ["芯片组", "系列"], index=0)
 
         筛选项目 = df[筛选框].unique().tolist()
+
+        
         col1, col2 = st.columns(2)
         with col1:
             筛选条件 = st.multiselect(f"选择筛选{筛选框}", 筛选项目, default=筛选项目[:3])
