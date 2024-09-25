@@ -2,7 +2,7 @@
 
 import pandas as pd
 import streamlit as st
-from sympy import N
+
 
 
 def gpu_product_parameters_comparison(df: pd.DataFrame =None,传入筛选项= None):
