@@ -5,7 +5,7 @@ import streamlit as st
 
 
 
-def mb_product_parameters_comparison(df: pd.DataFrame =None):
+def mb_product_parameters_comparison(df: pd.DataFrame =None,传入筛选项=None):
     '''主板产品参数对比工具'''
     st.title('主板产品参数对比工具')
     if  df is not None :
@@ -31,8 +31,7 @@ def mb_product_parameters_comparison(df: pd.DataFrame =None):
         
         col1, col2 = st.columns(2)
         with col1:
-            筛选条件 = st.multiselect(f"选择筛选{筛选框}", 筛选项目, default=筛选项目[:3])
-
+            筛选条件 = st.multiselect(f"选择筛选{筛选框}", 筛选项目, default=筛选项目[:3] if 传入筛选项 is None else 传入筛选项)
         if 筛选条件:
             df = df[df[筛选框].isin(筛选条件)]
 
@@ -63,14 +62,14 @@ def mb_product_parameters_comparison(df: pd.DataFrame =None):
             else:
                 display_data = df.set_index(选择查看的列)
 
-            st.title("竖向表格  参数对比")
+            st.title("横向表格  参数对比")
             cols = st.columns([ 1.1 if len(选择的型号)>= 10 else \
                                 1.0 if len(选择的型号)>= 6 else \
                                 0.6 if len(选择的型号)>= 3 else \
                                 0.5 if len(选择的型号)> 1 else 0.4]  \
                                 + [1] * len(选择的型号))
             with cols[0]:
-                st.write("显卡图片：")
+                st.write("主板预览: ")
             for index, row in display_data.iterrows():
                 with cols[选择的型号.index(index) + 1]:
                     set_image_width = 100 if len(选择的型号) > 3 else 40
@@ -84,7 +83,7 @@ def mb_product_parameters_comparison(df: pd.DataFrame =None):
                     </div>
                     <div style="text-align: center; margin-top: 1px; border:  None; padding: 0px;">
                     <a href="https://www.gigabyte.cn/Motherboard/{row['技嘉规格型号copy']}" target="_blank">
-                    <button style="border: none;">{row["技嘉规格型号copy"]}特色重点</button>
+                    <button style="border: none;">{row["技嘉规格型号copy"]}官网</button>
                     </a>
                     """, unsafe_allow_html=True)
 
@@ -100,11 +99,15 @@ def mb_product_parameters_comparison(df: pd.DataFrame =None):
             column_config_setting = {
                 "盒子图片": st.column_config.ImageColumn(
                     "盒子图片",
-                    width="small",
+                    width="samll",
                 ),
                 "正面图片": st.column_config.ImageColumn(
                     "正面图片",
-                    width="small",
+                    width="samll",
+                ),
+                "接口图片": st.column_config.ImageColumn(
+                    "接口图片",
+                    width="samll",
                 )
             }
             st.dataframe(display_data,

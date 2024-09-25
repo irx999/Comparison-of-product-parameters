@@ -2,9 +2,10 @@
 
 import pandas as pd
 import streamlit as st
+from sympy import N
 
 
-def gpu_product_parameters_comparison(df: pd.DataFrame =None):
+def gpu_product_parameters_comparison(df: pd.DataFrame =None,传入筛选项= None):
     '''显卡参数页面'''
     # 页面标题
     st.title('显卡参数对比工具')
@@ -30,7 +31,7 @@ def gpu_product_parameters_comparison(df: pd.DataFrame =None):
 
         col1, col2 = st.columns(2)
         with col1:
-            筛选条件 = st.multiselect(f"选择筛选{筛选框}", 筛选项目, default=筛选项目[:3])
+            筛选条件 = st.multiselect(f"选择筛选{筛选框}", 筛选项目, default=筛选项目[:3] if 传入筛选项 is None else 传入筛选项)
 
         if 筛选条件:
             df = df[df[筛选框].isin(筛选条件)]
@@ -66,7 +67,7 @@ def gpu_product_parameters_comparison(df: pd.DataFrame =None):
 
         if selected_gpus:
 
-            st.title("竖向表格  参数对比")
+            st.title("横向表格  参数对比")
             cols = st.columns([ 1.1 if len(selected_gpus)>= 10 else \
                                 1.0 if len(selected_gpus)>= 6 else \
                                 0.6 if len(selected_gpus)>= 3 else \
@@ -85,7 +86,7 @@ def gpu_product_parameters_comparison(df: pd.DataFrame =None):
                     </div>
                     <div style="text-align: center; margin-top: 1px; border:  None; padding: 0px;">
                     <a href="https://www.gigabyte.cn/Graphics-Card/{row['技嘉规格型号copy']}" target="_blank">
-                    <button style="border: none;">{row["技嘉规格型号copy"]}特色重点</button>
+                    <button style="border: none;">{row["技嘉规格型号copy"]}官网</button>
                     </a>
                     """, unsafe_allow_html=True)
 

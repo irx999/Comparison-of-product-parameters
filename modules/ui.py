@@ -1,6 +1,7 @@
 '''这里是写UI页面相关'''
 import streamlit as st
 import pandas as pd
+from sympy import N
 
 
 
@@ -17,11 +18,13 @@ def main_ui():
     """主页面"""
     params = st.query_params
     current_page  = params.get("page", "欢迎页")
-
+    传入筛选项 = params.get("传入筛选项", None).split(",") if params.get("传入筛选项", None) else None
     #print(current_page,"当前页面")
 
     def navigate_to(page):
         params["page"] = page
+        if 传入筛选项:
+            del params["传入筛选项"]
         #main_ui()
 
     pagesetting = {">> 1. 欢迎页": "欢迎页",
@@ -42,10 +45,10 @@ def main_ui():
             cpu_product_parameters_comparison()
 
         case "主板参数对比工具":
-            mb_product_parameters_comparison(MB_DATA)
+            mb_product_parameters_comparison(MB_DATA,传入筛选项= 传入筛选项)
 
         case "显卡参数对比工具":
-            gpu_product_parameters_comparison(GPU_DATA)
+            gpu_product_parameters_comparison(GPU_DATA,传入筛选项= 传入筛选项)
 
         case "测试页面":
             test_page()
