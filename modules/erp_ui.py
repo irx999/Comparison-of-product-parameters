@@ -32,9 +32,12 @@ def erp_ui():
                     st.session_state.update_time = erp.update_time
                     st.session_state.empname  = datalist['emp_name']
                     st.session_state.data_list = data
+                except ValueError:
+                    st.error("订单编号准确！")
                 except:
                     st.error("订单编号不存在！")
-                
+                finally:
+                    st.rerun()
 
     
     st.button("检测按钮",on_click=test_func)
@@ -67,7 +70,7 @@ def erp_ui():
                     column_config = column_config )
 
 
-    passpd  = st.text_input("请输入日志查看密码密码")
+    passpd  = st.text_input("请输入日志查看密码")
     if passpd == "123":
         st.warning("日志记录:")
         try:

@@ -12,7 +12,7 @@ import pytz
 COMPANY_DOMAIN  = st.secrets["ERP"]["COMPANY_DOMAIN"]
 erpcookies = st.secrets["ERP"]["erpcookies"]
 r = redis.Redis(host='redis_container', port=6379, db=0)
-r = redis.Redis(host='localhost', port=6379, db=0)
+# r = redis.Redis(host='localhost', port=6379, db=0)
 class ERP():
     """ 这里是3cerp功能相关的类 """
     def __init__(self,erpcookies=None) -> None:
@@ -29,6 +29,8 @@ class ERP():
         if not cBillcode.startswith("NO-"):
             url  = f"http://{COMPANY_DOMAIN}/pages/net/getNetOrderList.htm?totalCount=1&search_billcode_filter={cBillcode}&search_billcode_key=platformNo"
             res = requests.get(url=url,headers=self.headers,cookies=self.cookies,verify= False,timeout= 20)
+            if len(res.json()["data"]>0):
+                raise ValueError("订单结号不准确")
             cBillcode = res.json()["data"][0]["c_billcode"]
 
 

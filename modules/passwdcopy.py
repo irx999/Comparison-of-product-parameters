@@ -15,7 +15,7 @@ def pswd():
         erp_ui()
     else:
         # 创建密码输入框
-        password = st.text_input("请输入密码", type="password")
+        password = st.text_input("请输入密码", type="password",)
 
         # 登录按钮
         if st.button("登录"):
@@ -28,6 +28,12 @@ def pswd():
                 # 将登录状态保存1天
             else:
                 st.warning("密码错误，请重试。")
+
+        if  password == PASSWORD:
+            st.session_state.authenticated = True
+            st.success("登录成功！")
+            st.session_state['password_time'] = time.time()
+            st.rerun()
 
     # 检查登录状态有效性（1天内）
     if 'password_time' in st.session_state:
