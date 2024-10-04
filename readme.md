@@ -24,3 +24,15 @@ services:
     volumes:
     - ./models:/src/models
 ```
+
+
+
+if "*" in c_goods_sku:
+            c_goods_sku = c_goods_sku[:-2]
+
+
+        return_list = {}
+        for  k , v  in [["正常",c_goods_sku],
+                        ["**",c_goods_sku+"**"],
+                        ["*!",c_goods_sku+"*!"],
+                        ["*?",c_goods_sku+"*?"]]:
