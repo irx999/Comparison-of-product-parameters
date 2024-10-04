@@ -10,7 +10,8 @@ from modules.load_data import GPU_DATA,MB_DATA
 # 导入CPU参数对比模块
 from modules.gpu_ui import gpu_product_parameters_comparison
 from modules.mb_ui import mb_product_parameters_comparison
-from modules.erp_ui import test_page
+from modules.passwdcopy import pswd
+from modules.erp_ui import erp_ui
 
 
 
@@ -36,6 +37,7 @@ def main_ui():
     for   page_name, page_id in pagesetting.items():
         st.sidebar.button(page_name, on_click=navigate_to, args=(page_id,))
 
+
     # 根据当前页面显示内容
     match current_page:
         case "欢迎页":
@@ -51,7 +53,7 @@ def main_ui():
             gpu_product_parameters_comparison(GPU_DATA,传入筛选项= 传入筛选项)
 
         case "测试页面":
-            test_page()
+            pswd()
 
         case _:  # 其他页面
             st.markdown("<h1 style='text-align: center;'>-- 页面不存在 --</h1>", unsafe_allow_html=True)
