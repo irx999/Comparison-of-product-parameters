@@ -5,3 +5,4 @@ build/
 *.pyc
 test.py
 secrets.toml
+modules/app.log

@@ -33,17 +33,19 @@ def erp_ui():
                     st.session_state.empname  = datalist['emp_name']
                     st.session_state.data_list = data
                 except ValueError:
-                    st.error("订单编号准确！")
-                except:
-                    st.error("订单编号不存在！")
-                finally:
-                    st.rerun()
+                    st.error("订单编号不准确！")
+                    #st.rerun()
+                    st.session_state.data_list = pd.DataFrame()
+                # except exception as e:
+                #     st.error("订单编号不存在或不唯一！{e}")
+                        
 
     
     st.button("检测按钮",on_click=test_func)
     # 遍历每个商品并展示
-    if 'data_list' in st.session_state:
-        df = pd.DataFrame(st.session_state.data_list)
+    df = pd.DataFrame(st.session_state.data_list)
+    if 'data_list' in st.session_state and not df.empty:
+        
         
         df.rename(columns={'c_product_goods_name': '商品名称',"n":"开单数量"}, inplace=True)
 
