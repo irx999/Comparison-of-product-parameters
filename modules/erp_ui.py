@@ -47,7 +47,7 @@ def erp_ui():
     if  "data_list" in st.session_state:
         df = pd.DataFrame(st.session_state.data_list)
         if not df.empty:
-            df.rename(columns={'c_product_goods_name': '商品名称',"n":"开单数量"}, inplace=True)
+            df.rename(columns={'c_product_goods_name': '商品名称',"n":"开单数量","c_goods_sku":"商品编码"}, inplace=True)
 
             def check_conditions(row):
                 if '*' not in row['商品名称'] and row['**'] > 0:
@@ -59,7 +59,7 @@ def erp_ui():
             df['Z'] = df.apply(check_conditions, axis=1)
             
             df.insert(0, '校验', df['Z'])
-            df.drop(columns=['c_goods_sku',"Z"],inplace=True)
+            df.drop(columns=["Z"],inplace=True)
             logging.info(f"业务员{st.session_state.empname}查询了订单{input_text}的商品信息。{ df.to_dict(orient='index')}")
             # 定义条件样式函数
             def highlight_positive(s):
@@ -84,6 +84,7 @@ def erp_ui():
             with open('modules/app.log', 'r') as file:
                 log_contents = file.read()
                 st.text_area("日志内容", log_contents, height=300)
+                st.download_button(label="下载日志文件", data=log_contents, file_name="app.log")
         except FileNotFoundError:
             st.warning("日志文件不存在。")
     elif  passpd != "":

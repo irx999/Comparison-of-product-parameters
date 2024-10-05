@@ -29,10 +29,10 @@ def main_ui():
         #main_ui()
 
     pagesetting = {">> 1. 欢迎页": "欢迎页",
-                   ">> 2. CPU参数对比工具- 待开发": "CPU参数对比工具",
+                   #">> 2. CPU参数对比工具- 待开发": "CPU参数对比工具",
                    ">> 3. 主板参数对比工具": "主板参数对比工具",
                    ">> 4. 显卡参数对比工具": "显卡参数对比工具",
-                   ">> 5. 测试页面": "测试页面",
+                   ">> 5. 是否开*号产品检测": "是否开*号产品检测",
     }
     for   page_name, page_id in pagesetting.items():
         st.sidebar.button(page_name, on_click=navigate_to, args=(page_id,))
@@ -43,8 +43,8 @@ def main_ui():
         case "欢迎页":
             welcome_page()
 
-        case "CPU参数对比工具":
-            cpu_product_parameters_comparison()
+        # case "CPU参数对比工具":
+        #     cpu_product_parameters_comparison()
 
         case "主板参数对比工具":
             mb_product_parameters_comparison(MB_DATA,传入筛选项= 传入筛选项)
@@ -52,7 +52,7 @@ def main_ui():
         case "显卡参数对比工具":
             gpu_product_parameters_comparison(GPU_DATA,传入筛选项= 传入筛选项)
 
-        case "测试页面":
+        case "是否开*号产品检测":
             pswd()
 
         case _:  # 其他页面

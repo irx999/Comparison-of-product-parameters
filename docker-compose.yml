@@ -1,5 +1,5 @@
-servis:
-  productinfoviewer :
+services:
+  productinfoviewer:
     container_name: productinfoviewer
     build: .
     ports:
@@ -18,9 +18,10 @@ servis:
     container_name: redis_container
     image: redis:latest
     ports:
-    - "6379:6379"
+      - "6379:6379"
     environment:
-      - - TZ=Asia/Shanghai
+      - TZ=Asia/Shanghai
+
 
 
 

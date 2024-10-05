@@ -1,9 +1,20 @@
-
+""" 密码设置页面 """
 import streamlit as st
 import time
 from modules.erp_ui import erp_ui
+from datetime import datetime
+
+# 获取当前日期
+current_date = datetime.now()
+
+# 格式化为 MMDD 形式
+formatted_date = current_date.strftime('%m%d')
+
+# 输出结果
+print(formatted_date)
+
 # 设置密码
-PASSWORD = "123"
+PASSWORD = formatted_date
 
 def pswd():
 # 检查用户是否已经登录
