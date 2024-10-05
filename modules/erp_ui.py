@@ -46,6 +46,7 @@ def erp_ui():
     #df = pd.DataFrame(st.session_state.data_list)
     if  "data_list" in st.session_state:
         df = pd.DataFrame(st.session_state.data_list)
+        
         if not df.empty:
             df.rename(columns={'c_product_goods_name': '商品名称',"n":"开单数量","c_goods_sku":"商品编码"}, inplace=True)
 
@@ -72,10 +73,15 @@ def erp_ui():
                 '商品名称': {'width': 500},
                 '开单数量': {'width': 50},
                 '校验': {'width': 50}}
+            
+            df = df[df['校验'] == '❌']
+            
+            if not df.empty:
             #df= df.reset_index(drop=True, inplace=True)
-            st.dataframe(df,use_container_width= False,height=800,
-                        column_config = column_config )
-
+                st.dataframe(df,use_container_width= False,height=800,
+                            column_config = column_config )
+            else:
+                st.success("开单不存在有*未开情况！")
 
     passpd  = st.text_input("请输入日志查看密码")
     if passpd == "321":
