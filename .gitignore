@@ -6,3 +6,4 @@ build/
 test.py
 secrets.toml
 modules/app.log
+modules/app.log

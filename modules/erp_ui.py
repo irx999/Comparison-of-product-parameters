@@ -41,39 +41,44 @@ def erp_ui():
                         
 
     
-    st.button("检测按钮",on_click=test_func)
+    st.button("检测",on_click=test_func)
     # 遍历每个商品并展示
-    df = pd.DataFrame(st.session_state.data_list)
-    if 'data_list' in st.session_state and not df.empty:
-        
-        
-        df.rename(columns={'c_product_goods_name': '商品名称',"n":"开单数量"}, inplace=True)
+    #df = pd.DataFrame(st.session_state.data_list)
+    if  "data_list" in st.session_state:
+        df = pd.DataFrame(st.session_state.data_list)
+        if not df.empty:
+            df.rename(columns={'c_product_goods_name': '商品名称',"n":"开单数量"}, inplace=True)
 
-        def check_conditions(row):
-            if '*' not in row['商品名称'] and row['**'] > 0:
-                return '❌'
-            else:
-                return '✅'
+            def check_conditions(row):
+                if '*' not in row['商品名称'] and row['**'] > 0:
+                    return '❌'
+                else:
+                    return '✅'
 
-        
-        df['Z'] = df.apply(check_conditions, axis=1)
-        
-        df.insert(0, '校验结果', df['Z'])
-        df.drop(columns=['c_goods_sku',"Z"],inplace=True)
-        logging.info(f"用户{st.session_state.empname}查询了订单{input_text}的商品信息。{ df[df['校验结果'] == '✅'].to_dict()}")
+            
+            df['Z'] = df.apply(check_conditions, axis=1)
+            
+            df.insert(0, '校验', df['Z'])
+            df.drop(columns=['c_goods_sku',"Z"],inplace=True)
+            logging.info(f"业务员{st.session_state.empname}查询了订单{input_text}的商品信息。{ df.to_dict(orient='index')}")
+            # 定义条件样式函数
+            def highlight_positive(s):
+                return ['background-color: red' if v > 0 else '' for v in s]
 
+            # 应用样式
+            styled_df = df.style.apply(highlight_positive, subset=['**'])
 
-        column_config = {
-            '商品名称': {'width': 300},
-            '开单数量': {'width': 20},
-            '校验结果': {'width': 20}}
-        #df= df.reset_index(drop=True, inplace=True)
-        st.dataframe(df,use_container_width= True,height=800,
-                    column_config = column_config )
+            column_config = {
+                '商品名称': {'width': 500},
+                '开单数量': {'width': 50},
+                '校验': {'width': 50}}
+            #df= df.reset_index(drop=True, inplace=True)
+            st.dataframe(df,use_container_width= False,height=800,
+                        column_config = column_config )
 
 
     passpd  = st.text_input("请输入日志查看密码")
-    if passpd == "123":
+    if passpd == "321":
         st.warning("日志记录:")
         try:
             with open('modules/app.log', 'r') as file:

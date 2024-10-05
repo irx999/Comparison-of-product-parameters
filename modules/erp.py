@@ -27,11 +27,15 @@ class ERP():
     def get_product_list(self,cBillcode:str)->dict:
         """ 获取订单号对应的商品信息和订单信息 {"emp_name":str,"data":[{key:value}}"""
         if not cBillcode.startswith("NO-"):
-            url  = f"http://{COMPANY_DOMAIN}/pages/net/getNetOrderList.htm?totalCount=1&search_billcode_filter={cBillcode}&search_billcode_key=platformNo"
-            res = requests.get(url=url,headers=self.headers,cookies=self.cookies,verify= False,timeout= 20)
-            if len(res.json()["data"])>1:
-                raise ValueError("订单结号不准确")
-            cBillcode = res.json()["data"][0]["c_billcode"]
+            try:
+                url  = f"http://{COMPANY_DOMAIN}/pages/net/getNetOrderList.htm?totalCount=1&search_billcode_filter={cBillcode}&search_billcode_key=platformNo"
+                res = requests.get(url=url,headers=self.headers,cookies=self.cookies,verify= False,timeout= 20)
+                if len(res.json()["data"])>1:
+                    raise ValueError("订单结号不准确")
+                cBillcode = res.json()["data"][0]["c_billcode"]
+            except:
+                raise ValueError("订单号不正确")
+
 
 
         
