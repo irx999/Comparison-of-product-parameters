@@ -30,6 +30,8 @@ class ERP():
             try:
                 url  = f"http://{COMPANY_DOMAIN}/pages/net/getNetOrderList.htm?totalCount=1&search_billcode_filter={cBillcode}&search_billcode_key=platformNo"
                 res = requests.get(url=url,headers=self.headers,cookies=self.cookies,verify= False,timeout= 20)
+                if res.status_code!= 200:
+                    raise IOError("获取订单号失败")
                 if len(res.json()["data"])>1:
                     raise ValueError("订单结号不准确")
                 cBillcode = res.json()["data"][0]["c_billcode"]

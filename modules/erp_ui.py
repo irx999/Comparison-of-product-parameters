@@ -36,6 +36,9 @@ def erp_ui():
                     st.error("订单编号不准确！")
                     #st.rerun()
                     st.session_state.data_list = pd.DataFrame()
+                except IOError :
+                    st.error(f"3cerp账号未登录！")
+                    #st.rerun()
                 # except exception as e:
                 #     st.error("订单编号不存在或不唯一！{e}")
                         
